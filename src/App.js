@@ -77,6 +77,7 @@ export default function SignIn() {
   const [valueComments, setValueComments] = React.useState();
 
   const [page, setPage] = React.useState(0);
+  const [responseURL, setResponseURL] = React.useState();
 
   const handle_ChangeValue = (event) => {
     event.preventDefault();
@@ -103,6 +104,12 @@ export default function SignIn() {
 
     await axios.post(http, body, { headers }).then((response) => {
       if (response.data[0].res === 'SUCCESS') {
+        setResponseURL(
+          'สิ้นสุดการดำเนินรายการ ' + stk_codeURL.split('?stk_code=')[1]
+        );
+        setPage(1);
+      } else {
+        setResponseURL(response.data[0].res);
         setPage(1);
       }
     });
@@ -155,9 +162,19 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Typography variant="body2" color="text.secondary" align="center">
-            ขอบคุณท่านผู้ปฏิบัติงาน
-          </Typography>
+          {responseURL === 'UNSUCCESS, YOUR JOB IS NOT FINISH !!' ? (
+            <React.Fragment>
+              <Typography variant="body2" color="text.secondary" align="center">
+                {responseURL}
+              </Typography>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Typography variant="body2" color="text.secondary" align="center">
+                ขอบคุณท่านผู้ปฏิบัติงาน
+              </Typography>
+            </React.Fragment>
+          )}
           <Stack direction="row" spacing={3}>
             <Button
               type="submit"
