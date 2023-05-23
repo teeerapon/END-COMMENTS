@@ -140,7 +140,7 @@ export default function SignIn() {
 
   React.useEffect(() => {
     liff.init(
-      { liffId: '1657915988-6Jrbvqly' },
+      { liffId: '1657915988-KLn4ZXyE' },
       () => {
         if (liff.isLoggedIn()) {
           runApp();
