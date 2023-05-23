@@ -122,6 +122,7 @@ export default function SignIn() {
 
   const handleCloseLiff = () => {
     liff.closeWindow();
+    window.close();
   };
 
   const runApp = () => {
