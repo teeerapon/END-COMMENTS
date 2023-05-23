@@ -181,11 +181,15 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              color="success"
+              color={
+                responseURL === 'UNSUCCESS, YOUR JOB IS NOT FINISH !!'
+                  ? 'error'
+                  : 'success'
+              }
               onClick={handleCloseLiff}
               sx={{ mt: 3, mb: 2 }}
             >
-              Success
+              OK
             </Button>
           </Stack>
         </Box>
