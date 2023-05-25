@@ -11,6 +11,8 @@ import axios from 'axios';
 import Stack from '@mui/material/Stack';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
@@ -227,18 +229,27 @@ export default function SignIn() {
               onChange={handle_ChangeValue}
               name="comments"
             />
-            <DemoContainer
-              components={[
-                'DateTimePicker',
-                'MobileDateTimePicker',
-                'DesktopDateTimePicker',
-                'StaticDateTimePicker',
-              ]}
-            >
-              <DemoItem label="Mobile variant">
-                <MobileDateTimePicker defaultValue={dayjs()} />
-              </DemoItem>
-            </DemoContainer>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer
+                components={[
+                  'DateTimePicker',
+                  'MobileDateTimePicker',
+                  'DesktopDateTimePicker',
+                  'StaticDateTimePicker',
+                ]}
+              >
+                <MobileDateTimePicker
+                  label="วันที่เริ่มต้นปฎิบัติงาน"
+                  slotProps={{ textField: { size: 'small' } }}
+                  defaultValue={dayjs()}
+                />
+                <MobileDateTimePicker
+                  label="วันที่ปฎิบัติงานเสร็จสิ้น"
+                  slotProps={{ textField: { size: 'small' } }}
+                  defaultValue={dayjs()}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
             <Button
               type="submit"
               fullWidth
