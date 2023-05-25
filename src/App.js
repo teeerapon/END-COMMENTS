@@ -56,7 +56,7 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      กรูณาระบุขั้นตอนการปฏิบัติงานของท่าน
+      กรุณาระบุขั้นตอนการปฏิบัติงานของท่าน
     </Typography>
   );
 }
