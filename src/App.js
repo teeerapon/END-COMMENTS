@@ -9,6 +9,9 @@ import { alpha, styled } from '@mui/material/styles';
 import liff from '@line/liff';
 import axios from 'axios';
 import Stack from '@mui/material/Stack';
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
+import dayjs from 'dayjs';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -138,19 +141,19 @@ export default function SignIn() {
       .catch((err) => console.error(err));
   };
 
-  React.useEffect(() => {
-    liff.init(
-      { liffId: '1657915988-KLn4ZXyE' },
-      () => {
-        if (liff.isLoggedIn()) {
-          runApp();
-        } else {
-          liff.login();
-        }
-      },
-      (err) => console.error(err)
-    );
-  }, []);
+  // React.useEffect(() => {
+  //   liff.init(
+  //     { liffId: '1657915988-KLn4ZXyE' },
+  //     () => {
+  //       if (liff.isLoggedIn()) {
+  //         runApp();
+  //       } else {
+  //         liff.login();
+  //       }
+  //     },
+  //     (err) => console.error(err)
+  //   );
+  // }, []);
 
   if (page === 1) {
     return (
@@ -224,6 +227,18 @@ export default function SignIn() {
               onChange={handle_ChangeValue}
               name="comments"
             />
+            <DemoContainer
+              components={[
+                'DateTimePicker',
+                'MobileDateTimePicker',
+                'DesktopDateTimePicker',
+                'StaticDateTimePicker',
+              ]}
+            >
+              <DemoItem label="Mobile variant">
+                <MobileDateTimePicker defaultValue={dayjs()} />
+              </DemoItem>
+            </DemoContainer>
             <Button
               type="submit"
               fullWidth
