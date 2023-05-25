@@ -242,11 +242,13 @@ export default function SignIn() {
                   label="วันที่เริ่มต้นปฎิบัติงาน"
                   slotProps={{ textField: { size: 'small' } }}
                   defaultValue={dayjs()}
+                  ampm={false}
                 />
                 <MobileDateTimePicker
                   label="วันที่ปฎิบัติงานเสร็จสิ้น"
                   slotProps={{ textField: { size: 'small' } }}
                   defaultValue={dayjs()}
+                  ampm={false}
                 />
               </DemoContainer>
             </LocalizationProvider>
