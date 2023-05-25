@@ -14,6 +14,9 @@ import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import IconButton from '@mui/material/IconButton';
+import FilePresentIcon from '@mui/icons-material/FilePresent';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -252,6 +255,30 @@ export default function SignIn() {
                 />
               </DemoContainer>
             </LocalizationProvider>
+            <ImageListItemBar
+              sx={{
+                backgroundColor: 'rgba(0, 0, 0, 1)',
+                color: 'rgba(255, 255, 255, 1)',
+                mt: 2,
+              }}
+              position="below"
+              title={<span>&nbsp; &nbsp;กรุณาเลือกไฟล์รูปภาพ</span>}
+              actionIcon={
+                <IconButton
+                  sx={{ color: 'rgba(255, 255, 255, 1)' }}
+                  component="label"
+                >
+                  <input
+                    hidden
+                    size="small"
+                    type="file"
+                    name="file"
+                    // onChange={(e) => handleUploadFile_2(e, params)}
+                  />
+                  <FilePresentIcon sx={{ fontSize: 20 }} />
+                </IconButton>
+              }
+            />
             <Button
               type="submit"
               fullWidth
