@@ -86,6 +86,35 @@ export default function SignIn() {
 
   const [page, setPage] = React.useState(0);
   const [responseURL, setResponseURL] = React.useState();
+  const [dataFiles, setDataFiles] = React.useState();
+  const [beginDate, setBeginDate] = React.useState();
+  const [endDate, setEndDate] = React.useState();
+
+  const handle_ChangeBeginDate = (newValue) => {
+    setBeginDate(newValue);
+  };
+
+  const handle_ChangeEndDate = (newValue) => {
+    setEndDate(newValue);
+  };
+
+  const handle_files = async (event) => {
+    event.preventDefault();
+
+    let array = [];
+    for (let i = 0; i < event.target.files.length; i++) {
+      let formData_1 = new FormData();
+      formData_1.append(
+        'ST_code',
+        stk_codeURL ? stk_codeURL.split('?stk_code=')[1] : null
+      );
+      formData_1.append('file', event.target.files[i]);
+      formData_1.append('filename', event.target.files[i].name);
+
+      array[i] = formData_1;
+    }
+    setDataFiles(array);
+  };
 
   const handle_ChangeValue = (event) => {
     event.preventDefault();
@@ -101,6 +130,10 @@ export default function SignIn() {
       'ngrok-skip-browser-warning': '69420',
     };
 
+    const http_AttachFiles =
+      'https://5f02-61-7-147-129.ngrok-free.app/api/STcheck_files';
+    //'http://localhost:32001/api/STcheck_files';
+
     const http =
       'https://5f02-61-7-147-129.ngrok-free.app/api/STrack_End_Comments';
     // 'http://localhost:32001/api/STrack_End_Comments';
@@ -110,8 +143,11 @@ export default function SignIn() {
       End_Commetns: valueComments,
     };
 
-    await axios.post(http, body, { headers }).then((response) => {
+    await axios.post(http, body, { headers }).then(async (response) => {
       if (response.data[0].res === 'SUCCESS') {
+        for (let i = 0; i < dataFiles.length; i++) {
+          await axios.post(http_AttachFiles, dataFiles[i], { headers });
+        }
         setResponseURL(
           'สิ้นสุดการดำเนินรายการ ' + stk_codeURL.split('?stk_code=')[1]
         );
@@ -244,13 +280,15 @@ export default function SignIn() {
                 <MobileDateTimePicker
                   label="วันที่เริ่มต้นปฎิบัติงาน"
                   slotProps={{ textField: { size: 'small' } }}
-                  defaultValue={dayjs()}
+                  defaultValue={beginDate ? beginDate : dayjs()}
+                  onChange={handle_ChangeBeginDate}
                   ampm={false}
                 />
                 <MobileDateTimePicker
                   label="วันที่ปฎิบัติงานเสร็จสิ้น"
                   slotProps={{ textField: { size: 'small' } }}
-                  defaultValue={dayjs()}
+                  defaultValue={endDate ? endDate : dayjs()}
+                  onChange={handle_ChangeEndDate}
                   ampm={false}
                 />
               </DemoContainer>
@@ -273,7 +311,8 @@ export default function SignIn() {
                     size="small"
                     type="file"
                     name="file"
-                    // onChange={(e) => handleUploadFile_2(e, params)}
+                    multiple
+                    onChange={handle_files}
                   />
                   <FilePresentIcon sx={{ fontSize: 20 }} />
                 </IconButton>
