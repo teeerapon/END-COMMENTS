@@ -87,15 +87,19 @@ export default function SignIn() {
   const [page, setPage] = React.useState(0);
   const [responseURL, setResponseURL] = React.useState();
   const [dataFiles, setDataFiles] = React.useState();
-  const [beginDate, setBeginDate] = React.useState();
-  const [endDate, setEndDate] = React.useState();
+  const [beginDate, setBeginDate] = React.useState(dayjs());
+  const [endDate, setEndDate] = React.useState(dayjs());
 
   const handle_ChangeBeginDate = (newValue) => {
-    setBeginDate(newValue);
+    setBeginDate(
+      `${newValue.format('YYYY-MM-DD')}T${newValue.format('HH:mm:ss')}`
+    );
   };
 
   const handle_ChangeEndDate = (newValue) => {
-    setEndDate(newValue);
+    setEndDate(
+      `${newValue.format('YYYY-MM-DD')}T${newValue.format('HH:mm:ss')}`
+    );
   };
 
   const handle_files = async (event) => {
@@ -135,23 +139,25 @@ export default function SignIn() {
     //'http://localhost:32001/api/STcheck_files';
 
     const http =
-      'https://5f02-61-7-147-129.ngrok-free.app/api/STrack_End_Comments';
-    // 'http://localhost:32001/api/STrack_End_Comments';
+      // 'https://5f02-61-7-147-129.ngrok-free.app/api/STrack_End_Comments';
+      'http://localhost:32001/api/STrack_End_Comments';
 
     const body = {
       stk_code: stk_codeURL ? stk_codeURL.split('?stk_code=')[1] : null,
       End_Commetns: valueComments,
+      BeginDate: beginDate,
+      EndDate: endDate,
     };
 
     await axios.post(http, body, { headers }).then(async (response) => {
       if (response.data[0].res === 'SUCCESS') {
-        for (let i = 0; i < dataFiles.length; i++) {
-          await axios.post(http_AttachFiles, dataFiles[i], { headers });
-        }
         setResponseURL(
           'สิ้นสุดการดำเนินรายการ ' + stk_codeURL.split('?stk_code=')[1]
         );
         setPage(1);
+        for (let i = 0; i < dataFiles.length; i++) {
+          await axios.post(http_AttachFiles, dataFiles[i], { headers });
+        }
       } else {
         setResponseURL(response.data[0].res);
         setPage(1);
@@ -280,14 +286,14 @@ export default function SignIn() {
                 <MobileDateTimePicker
                   label="วันที่เริ่มต้นปฎิบัติงาน"
                   slotProps={{ textField: { size: 'small' } }}
-                  defaultValue={beginDate ? beginDate : dayjs()}
+                  defaultValue={beginDate}
                   onChange={handle_ChangeBeginDate}
                   ampm={false}
                 />
                 <MobileDateTimePicker
                   label="วันที่ปฎิบัติงานเสร็จสิ้น"
                   slotProps={{ textField: { size: 'small' } }}
-                  defaultValue={endDate ? endDate : dayjs()}
+                  defaultValue={endDate}
                   onChange={handle_ChangeEndDate}
                   ampm={false}
                 />
@@ -300,7 +306,14 @@ export default function SignIn() {
                 mt: 2,
               }}
               position="below"
-              title={<span>&nbsp; &nbsp;กรุณาเลือกไฟล์รูปภาพ</span>}
+              title={
+                <span>
+                  &nbsp; &nbsp;
+                  {dataFiles
+                    ? `อัพโหลดไฟล์แล้ว ${dataFiles.length} รายการ`
+                    : `กรุณาเลือกไฟล์รูปภาพ`}
+                </span>
+              }
               actionIcon={
                 <IconButton
                   sx={{ color: 'rgba(255, 255, 255, 1)' }}
