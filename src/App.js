@@ -190,8 +190,8 @@ export default function SignIn() {
       .catch((err) => console.error(err));
   };
 
-  React.useEffect(() => {
-    liff.init(
+  React.useEffect(async () => {
+    await liff.init(
       { liffId: '1657915988-KLn4ZXyE' },
       () => {
         if (liff.isLoggedIn()) {
