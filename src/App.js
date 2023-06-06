@@ -81,7 +81,9 @@ export default function SignIn() {
   const [statusMessage, setStatusMessage] = React.useState();
   const [userId, setUserId] = React.useState();
 
-  const stk_codeURL = window.location.search;
+  // const stk_codeURL = window.location.search;
+  const urlParams = new URLSearchParams(window.location.search);
+  const stk_codeURL = urlParams.get('stk_code');
   const [valueComments, setValueComments] = React.useState();
 
   const [page, setPage] = React.useState(0);
@@ -188,19 +190,20 @@ export default function SignIn() {
       .catch((err) => console.error(err));
   };
 
-  // React.useEffect(() => {
-  //   liff.init(
-  //     { liffId: '1657915988-KLn4ZXyE' },
-  //     () => {
-  //       if (liff.isLoggedIn()) {
-  //         runApp();
-  //       } else {
-  //         liff.login();
-  //       }
-  //     },
-  //     (err) => console.error(err)
-  //   );
-  // }, []);
+  React.useEffect(() => {
+    liff.init(
+      { liffId: '1657915988-KLn4ZXyE' },
+      () => {
+        if (liff.isLoggedIn()) {
+          runApp();
+        } else {
+          const destinationUrl = window.location.href;
+          liff.login({ redirectUri: destinationUrl });
+        }
+      },
+      (err) => console.error(err)
+    );
+  }, []);
 
   if (page === 1) {
     return (
@@ -250,6 +253,9 @@ export default function SignIn() {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Copyright sx={{ mt: 4 }} />
+        <Typography variant="body2" color="text.secondary" align="center">
+          {`${stk_codeURL}`}
+        </Typography>
         <Box
           sx={{
             marginTop: 2,
