@@ -146,6 +146,7 @@ export default function SignIn() {
 
     const body = {
       stk_code: stk_codeURL ? stk_codeURL.split('?stk_code=')[1] : null,
+      userID: userId,
       End_Commetns: valueComments,
       BeginDate: beginDate,
       EndDate: endDate,
@@ -190,7 +191,8 @@ export default function SignIn() {
       .catch((err) => console.error(err));
   };
 
-  React.useEffect(async () => {
+
+  const initLine = async () => {
     await liff.init(
       { liffId: '1657915988-KLn4ZXyE' },
       () => {
@@ -203,7 +205,10 @@ export default function SignIn() {
       },
       (err) => console.error(err)
     );
-  }, []);
+
+    React.useEffect(() => {
+      initLine();
+    }, []);
 
   if (page === 1) {
     return (
