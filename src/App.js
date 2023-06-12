@@ -110,10 +110,7 @@ export default function SignIn() {
     let array = [];
     for (let i = 0; i < event.target.files.length; i++) {
       let formData_1 = new FormData();
-      formData_1.append(
-        'ST_code',
-        stk_codeURL ? stk_codeURL.split('?stk_code=')[1] : null
-      );
+      formData_1.append('ST_code', stk_codeURL);
       formData_1.append('file', event.target.files[i]);
       formData_1.append('filename', event.target.files[i].name);
 
@@ -145,7 +142,7 @@ export default function SignIn() {
       'http://5f02-61-7-147-129.ngrok-free.app/api/STrack_End_Comments';
 
     const body = {
-      stk_code: stk_codeURL ? stk_codeURL.split('?stk_code=')[1] : null,
+      stk_code: stk_codeURL,
       userID: userId,
       End_Commetns: valueComments,
       BeginDate: beginDate,
@@ -154,9 +151,7 @@ export default function SignIn() {
 
     await axios.post(http, body, { headers }).then(async (response) => {
       if (response.data[0].res === 'SUCCESS') {
-        setResponseURL(
-          'สิ้นสุดการดำเนินรายการ ' + stk_codeURL.split('?stk_code=')[1]
-        );
+        setResponseURL('สิ้นสุดการดำเนินรายการ ' + stk_codeURL);
         setPage(1);
         for (let i = 0; i < dataFiles.length; i++) {
           await axios.post(http_AttachFiles, dataFiles[i], { headers });
