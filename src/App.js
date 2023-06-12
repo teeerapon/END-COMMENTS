@@ -191,7 +191,6 @@ export default function SignIn() {
       .catch((err) => console.error(err));
   };
 
-
   const initLine = async () => {
     await liff.init(
       { liffId: '1657915988-KLn4ZXyE' },
@@ -206,154 +205,163 @@ export default function SignIn() {
       (err) => console.error(err)
     );
 
-    // React.useEffect(() => {
-    //   initLine();
-    // }, []);
+    React.useEffect(() => {
+      initLine();
+    }, []);
 
-  if (page === 1) {
-    return (
-      <React.Fragment>
-        <Box
-          sx={{
-            marginTop: 10,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          {responseURL === 'UNSUCCESS, YOUR JOB IS NOT FINISH !!' ? (
-            <React.Fragment>
-              <Typography variant="body2" color="text.secondary" align="center">
-                {responseURL}
-              </Typography>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <Typography variant="body2" color="text.secondary" align="center">
-                ขอบคุณท่านผู้ปฏิบัติงาน
-              </Typography>
-            </React.Fragment>
-          )}
-          <Stack direction="row" spacing={3}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color={
-                responseURL === 'UNSUCCESS, YOUR JOB IS NOT FINISH !!'
-                  ? 'error'
-                  : 'success'
-              }
-              onClick={handleCloseLiff}
-              sx={{ mt: 3, mb: 2 }}
-            >
-              OK
-            </Button>
-          </Stack>
-        </Box>
-      </React.Fragment>
-    );
-  } else {
-    return (
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Copyright sx={{ mt: 4 }} />
-        <Typography variant="body2" color="text.secondary" align="center">
-          {`${stk_codeURL}`}
-        </Typography>
-        <Box
-          sx={{
-            marginTop: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
+    if (page === 1) {
+      return (
+        <React.Fragment>
           <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
+            sx={{
+              marginTop: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
           >
-            <BootstrapInput
-              margin="normal"
-              required
-              fullWidth
-              multiline
-              rows={5}
-              value={valueComments}
-              onChange={handle_ChangeValue}
-              name="comments"
-            />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer
-                components={[
-                  'DateTimePicker',
-                  'MobileDateTimePicker',
-                  'DesktopDateTimePicker',
-                  'StaticDateTimePicker',
-                ]}
-              >
-                <MobileDateTimePicker
-                  label="วันที่เริ่มต้นปฎิบัติงาน"
-                  slotProps={{ textField: { size: 'small' } }}
-                  defaultValue={beginDate}
-                  onChange={handle_ChangeBeginDate}
-                  ampm={false}
-                />
-                <MobileDateTimePicker
-                  label="วันที่ปฎิบัติงานเสร็จสิ้น"
-                  slotProps={{ textField: { size: 'small' } }}
-                  defaultValue={endDate}
-                  onChange={handle_ChangeEndDate}
-                  ampm={false}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
-            <ImageListItemBar
-              sx={{
-                backgroundColor: 'rgba(0, 0, 0, 1)',
-                color: 'rgba(255, 255, 255, 1)',
-                mt: 2,
-              }}
-              position="below"
-              title={
-                <span>
-                  &nbsp; &nbsp;
-                  {dataFiles
-                    ? `อัพโหลดไฟล์แล้ว ${dataFiles.length} รายการ`
-                    : `กรุณาเลือกไฟล์รูปภาพ`}
-                </span>
-              }
-              actionIcon={
-                <IconButton
-                  sx={{ color: 'rgba(255, 255, 255, 1)' }}
-                  component="label"
+            {responseURL === 'UNSUCCESS, YOUR JOB IS NOT FINISH !!' ? (
+              <React.Fragment>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  align="center"
                 >
-                  <input
-                    hidden
-                    size="small"
-                    type="file"
-                    name="file"
-                    multiple
-                    onChange={handle_files}
-                  />
-                  <FilePresentIcon sx={{ fontSize: 20 }} />
-                </IconButton>
-              }
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="success"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Submit
-            </Button>
+                  {responseURL}
+                </Typography>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  align="center"
+                >
+                  ขอบคุณท่านผู้ปฏิบัติงาน
+                </Typography>
+              </React.Fragment>
+            )}
+            <Stack direction="row" spacing={3}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color={
+                  responseURL === 'UNSUCCESS, YOUR JOB IS NOT FINISH !!'
+                    ? 'error'
+                    : 'success'
+                }
+                onClick={handleCloseLiff}
+                sx={{ mt: 3, mb: 2 }}
+              >
+                OK
+              </Button>
+            </Stack>
           </Box>
-        </Box>
-      </Container>
-    );
-  }
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Copyright sx={{ mt: 4 }} />
+          <Typography variant="body2" color="text.secondary" align="center">
+            {`${stk_codeURL}`}
+          </Typography>
+          <Box
+            sx={{
+              marginTop: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
+            >
+              <BootstrapInput
+                margin="normal"
+                required
+                fullWidth
+                multiline
+                rows={5}
+                value={valueComments}
+                onChange={handle_ChangeValue}
+                name="comments"
+              />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer
+                  components={[
+                    'DateTimePicker',
+                    'MobileDateTimePicker',
+                    'DesktopDateTimePicker',
+                    'StaticDateTimePicker',
+                  ]}
+                >
+                  <MobileDateTimePicker
+                    label="วันที่เริ่มต้นปฎิบัติงาน"
+                    slotProps={{ textField: { size: 'small' } }}
+                    defaultValue={beginDate}
+                    onChange={handle_ChangeBeginDate}
+                    ampm={false}
+                  />
+                  <MobileDateTimePicker
+                    label="วันที่ปฎิบัติงานเสร็จสิ้น"
+                    slotProps={{ textField: { size: 'small' } }}
+                    defaultValue={endDate}
+                    onChange={handle_ChangeEndDate}
+                    ampm={false}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+              <ImageListItemBar
+                sx={{
+                  backgroundColor: 'rgba(0, 0, 0, 1)',
+                  color: 'rgba(255, 255, 255, 1)',
+                  mt: 2,
+                }}
+                position="below"
+                title={
+                  <span>
+                    &nbsp; &nbsp;
+                    {dataFiles
+                      ? `อัพโหลดไฟล์แล้ว ${dataFiles.length} รายการ`
+                      : `กรุณาเลือกไฟล์รูปภาพ`}
+                  </span>
+                }
+                actionIcon={
+                  <IconButton
+                    sx={{ color: 'rgba(255, 255, 255, 1)' }}
+                    component="label"
+                  >
+                    <input
+                      hidden
+                      size="small"
+                      type="file"
+                      name="file"
+                      multiple
+                      onChange={handle_files}
+                    />
+                    <FilePresentIcon sx={{ fontSize: 20 }} />
+                  </IconButton>
+                }
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="success"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Box>
+        </Container>
+      );
+    }
+  };
 }
