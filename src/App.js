@@ -150,7 +150,7 @@ export default function SignIn() {
     };
 
     await axios.post(http, body, { headers }).then(async (response) => {
-      if (response.data[0].res !== 'UNSUCCESS, YOUR JOB IS NOT FINISH !!') {
+      if (!response.data[0].res) {
         setResponseURL('สิ้นสุดการดำเนินรายการ ' + stk_codeURL);
         setPage(1);
         for (let i = 0; i < dataFiles.length; i++) {
