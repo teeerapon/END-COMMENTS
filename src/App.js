@@ -168,14 +168,29 @@ export default function SignIn() {
     });
   };
 
+  const handleCloseLiff = () => {
+    liff.closeWindow();
+    window.close();
+  };
+
   const logout = () => {
     liff.logout();
     window.location.reload();
   };
 
-  const handleCloseLiff = () => {
-    liff.closeWindow();
-    window.close();
+  const initLine = () => {
+    liff.init(
+      { liffId: '1657915988-KLn4ZXyE' },
+      () => {
+        if (liff.isLoggedIn()) {
+          runApp();
+        } else {
+          const destinationUrl = window.location.href;
+          liff.login({ redirectUri: destinationUrl });
+        }
+      },
+      (err) => console.error(err)
+    );
   };
 
   const runApp = () => {
@@ -191,23 +206,9 @@ export default function SignIn() {
       .catch((err) => console.error(err));
   };
 
-  const initLine = async () => {
-    await liff.init(
-      { liffId: '1657915988-KLn4ZXyE' },
-      () => {
-        if (liff.isLoggedIn()) {
-          runApp();
-        } else {
-          const destinationUrl = window.location.href;
-          liff.login({ redirectUri: destinationUrl });
-        }
-      },
-      (err) => console.error(err)
-    );
-
-    React.useEffect(() => {
-      initLine();
-    }, []);
+  React.useEffect(() => {
+    initLine();
+  }, []);
 
     if (page === 1) {
       return (
