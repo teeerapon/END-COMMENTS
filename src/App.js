@@ -76,6 +76,13 @@ function sleep(delay = 0) {
 }
 
 export default function SignIn() {
+  var today = new Date();
+  var date =
+    today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  var time =
+    today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+  var dateTime = date + ' ' + time;
+
   const [idToken, setIdToken] = React.useState();
   const [displayName, setDisplayName] = React.useState();
   const [statusMessage, setStatusMessage] = React.useState();
@@ -147,8 +154,8 @@ export default function SignIn() {
       stk_code: stk_codeURL,
       userID: userId,
       End_Commetns: valueComments,
-      BeginDate: beginDate,
-      EndDate: endDate,
+      BeginDate: beginDate === dayjs() ? dateTime : beginDate,
+      EndDate: endDate === dayjs() ? dateTime : endDate,
     };
 
     await axios.post(http, body, { headers }).then(async (response) => {
@@ -256,7 +263,7 @@ export default function SignIn() {
         <CssBaseline />
         <Copyright sx={{ mt: 4 }} />
         <Typography variant="body2" color="text.secondary" align="center">
-          {`${stk_codeURL} (${dayjs()})`}
+          {`${stk_codeURL}`}
         </Typography>
         <Box
           sx={{
