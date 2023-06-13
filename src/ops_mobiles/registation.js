@@ -13,6 +13,7 @@ import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
+import config from '../config'
 
 function sleep(delay = 0) {
   return new Promise((resolve) => {
@@ -60,7 +61,7 @@ export default function SignUp() {
       'ngrok-skip-browser-warning': '69420',
     };
     const http =
-      'https://5f02-61-7-147-129.ngrok-free.app/api/STrack_Registation';
+      config.http + '/api/STrack_Registation';
     // 'http://vpnptec.dyndns.org:32001/api/STrack_Registation';
     //'http://localhost:32001/api/STrack_Registation';
 
@@ -102,7 +103,7 @@ export default function SignUp() {
         };
 
         const http =
-          'https://5f02-61-7-147-129.ngrok-free.app/api/OPS_Mobile_List_Vender';
+          config.http + '/api/OPS_Mobile_List_Vender';
         // 'http://vpnptec.dyndns.org:32001/api/OPS_Mobile_List_Vender';
         // 'http://localhost:32001/api/OPS_Mobile_List_Vender';
 

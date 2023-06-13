@@ -51,16 +51,16 @@ function App() {
 
   return (
     <IntlProvider>
-      <Main open={open}>
-        <AnimatePresence exitBeforeEnter>
-          <Routes key={location.pathname} location={location}>
-            <Route path="/" element={<Page404 />} />
-            <Route path="*" element={<Page404 />} />
-            <Route path="/Registation" element={<Registation />} />
-            <Route path="/EndComments" element={<EndComments />} />
-          </Routes>
-        </AnimatePresence>
-      </Main>
+      {/* <Main open={open}>
+        <AnimatePresence exitBeforeEnter> */}
+      <Routes key={location.pathname} location={location}>
+        <Route path="/" element={<Page404 />} />
+        <Route path="*" element={<Page404 />} />
+        <Route path="/Registation" element={<Registation />} />
+        <Route path="/EndComments" element={<EndComments />} />
+      </Routes>
+      {/* </AnimatePresence>
+      </Main> */}
     </IntlProvider>
   );
 }

@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
+import config from '../config'
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -143,12 +144,12 @@ export default function SignIn() {
     };
 
     const http_AttachFiles =
-      'https://5f02-61-7-147-129.ngrok-free.app/api/STcheck_files';
+      config.http + '/api/STcheck_files';
     //'http://localhost:32001/api/STcheck_files';
 
     const http =
-      // 'https://5f02-61-7-147-129.ngrok-free.app/api/STrack_End_Comments';
-      'https://5f02-61-7-147-129.ngrok-free.app/api/STrack_End_Comments';
+      // config.http + '/api/STrack_End_Comments';
+      config.http + '/api/STrack_End_Comments';
 
     const body = {
       stk_code: stk_codeURL,
