@@ -256,7 +256,7 @@ export default function SignIn() {
         <CssBaseline />
         <Copyright sx={{ mt: 4 }} />
         <Typography variant="body2" color="text.secondary" align="center">
-          {`${stk_codeURL}`}
+          {`${stk_codeURL} (${dayjs()})`}
         </Typography>
         <Box
           sx={{
