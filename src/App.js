@@ -89,12 +89,8 @@ export default function SignIn() {
   const [page, setPage] = React.useState(0);
   const [responseURL, setResponseURL] = React.useState();
   const [dataFiles, setDataFiles] = React.useState();
-  const [beginDate, setBeginDate] = React.useState(
-    `${dayjs().format('YYYY-MM-DD')}T${dayjs().format('HH:mm:ss')}`
-  );
-  const [endDate, setEndDate] = React.useState(
-    `${dayjs().format('YYYY-MM-DD')}T${dayjs().format('HH:mm:ss')}`
-  );
+  const [beginDate, setBeginDate] = React.useState(dayjs());
+  const [endDate, setEndDate] = React.useState(dayjs());
 
   console.log(`${dayjs().format('YYYY-MM-DD')}T${dayjs().format('HH:mm:ss')}`);
 
