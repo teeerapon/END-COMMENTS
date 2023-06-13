@@ -76,6 +76,13 @@ function sleep(delay = 0) {
 }
 
 export default function SignIn() {
+  var today = new Date();
+  var date =
+    today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  var time =
+    today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+  var dateTime = date + ' ' + time;
+
   const [idToken, setIdToken] = React.useState();
   const [displayName, setDisplayName] = React.useState();
   const [statusMessage, setStatusMessage] = React.useState();
@@ -89,8 +96,8 @@ export default function SignIn() {
   const [page, setPage] = React.useState(0);
   const [responseURL, setResponseURL] = React.useState();
   const [dataFiles, setDataFiles] = React.useState();
-  const [beginDate, setBeginDate] = React.useState(dayjs());
-  const [endDate, setEndDate] = React.useState(dayjs());
+  const [beginDate, setBeginDate] = React.useState(dateTime);
+  const [endDate, setEndDate] = React.useState(dateTime);
 
   console.log(`${dayjs().format('YYYY-MM-DD')}T${dayjs().format('HH:mm:ss')}`);
 
