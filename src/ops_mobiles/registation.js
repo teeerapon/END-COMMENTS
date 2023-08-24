@@ -9,6 +9,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import liff from '@line/liff';
+import Swal from 'sweetalert2';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -24,8 +25,9 @@ function sleep(delay = 0) {
 export default function SignUp() {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
+  console.log(options);
   const [optionsII, setOptionsII] = React.useState();
-  const loading = open && options.length === 0;
+  //const loading = open && options.length === 0;
   const [step, setStep] = React.useState(0);
 
   const [idToken, setIdToken] = React.useState();
@@ -53,6 +55,13 @@ export default function SignUp() {
   };
 
   const submitForm = async (event) => {
+    console.log(userId,
+      venderCode,
+      email,
+      name,
+      lastname,
+      phoneNumber);
+
     event.preventDefault();
 
     const headers = {
@@ -61,7 +70,7 @@ export default function SignUp() {
       'ngrok-skip-browser-warning': '69420',
     };
     const http =
-      config.http + '/api/STrack_Registation';
+      config.http + '/STrack_Registation';
     // 'http://vpnptec.dyndns.org:32001/api/STrack_Registation';
     //'http://localhost:32001/api/STrack_Registation';
 
@@ -74,23 +83,36 @@ export default function SignUp() {
       phoneNumber: phoneNumber,
     };
 
-    await axios
-      // .post(http, { mode: 'no-cors', headers, withCredentials: true }, body)
-      .post(http, body, { headers })
-      .then((response) => {
-        if (response.data[0].res) {
-          setResponseURL(response.data[0].res);
-          setStep(1);
-        }
-      });
+    if (!userId || !venderCode || !email || !name || !lastname || !phoneNumber) {
+      Swal.fire({
+        title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+        text: '',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+      })
+      setStep(0);
+    } else {
+      await axios
+        // .post(http, { mode: 'no-cors', headers, withCredentials: true }, body)
+        .post(http, body, { headers })
+        .then((response) => {
+          if (response.data[0].res) {
+            setResponseURL(response.data[0].res);
+            setStep(1);
+          }
+        });
+    }
+
   };
 
   React.useEffect(() => {
     let active = true;
+    console.log('useE on loading');
+    //console.log(!loading);
 
-    if (!loading) {
-      return undefined;
-    }
+    // if (!loading) {
+    //   return undefined;
+    // }
 
     (async () => {
       await sleep(1e3); // For demo purposes.
@@ -103,10 +125,10 @@ export default function SignUp() {
         };
 
         const http =
-          config.http + '/api/OPS_Mobile_List_Vender';
+          config.http + '/OPS_Mobile_List_Vender';
         // 'http://vpnptec.dyndns.org:32001/api/OPS_Mobile_List_Vender';
         // 'http://localhost:32001/api/OPS_Mobile_List_Vender';
-
+        console.log('useE');
         try {
           await axios
             .get(http, {
@@ -130,13 +152,13 @@ export default function SignUp() {
     return () => {
       active = false;
     };
-  }, [loading]);
+  }, []);
 
-  React.useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
+  // React.useEffect(() => {
+  //   if (!open) {
+  //     setOptions([]);
+  //   }
+  // }, [open]);
 
   const logout = () => {
     liff.logout();
@@ -273,16 +295,17 @@ export default function SignUp() {
                 </Grid>
                 <Grid item xs={12}>
                   <Autocomplete
+                    disablePortal
                     id="asynchronous-demo"
                     fullWidth
                     size="small"
-                    open={open}
-                    onOpen={() => {
-                      setOpen(true);
-                    }}
-                    onClose={() => {
-                      setOpen(false);
-                    }}
+                    // open={open}
+                    // onOpen={() => {
+                    //   setOpen(true);
+                    // }}
+                    // onClose={() => {
+                    //   setOpen(false);
+                    // }}
                     isOptionEqualToValue={(option, value) =>
                       option.VendorID === value.VendorID
                     }
@@ -295,22 +318,27 @@ export default function SignUp() {
                         setVenderCode(undefined);
                       }
                     }}
-                    loading={loading}
+                    renderOption={(props, jsonResults) => (
+                      <Box component="li" {...props} key={jsonResults.VendorID}>
+                        {jsonResults.Vendor_Name}
+                      </Box>
+                    )}
+                    // loading={loading}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="เลขที่ผู้เสียภาษี"
-                        InputProps={{
-                          ...params.InputProps,
-                          endAdornment: (
-                            <React.Fragment>
-                              {loading ? (
-                                <CircularProgress color="inherit" size={20} />
-                              ) : null}
-                              {params.InputProps.endAdornment}
-                            </React.Fragment>
-                          ),
-                        }}
+                        label="ชื่อ/บริษัท ของท่าน"
+                      // InputProps={{
+                      //   ...params.InputProps,
+                      //   endAdornment: (
+                      //     <React.Fragment>
+                      //       {loading ? (
+                      //         <CircularProgress color="inherit" size={20} />
+                      //       ) : null}
+                      //       {params.InputProps.endAdornment}
+                      //     </React.Fragment>
+                      //   ),
+                      // }}
                       />
                     )}
                   />
@@ -348,7 +376,7 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              color={responseURL === 'ลงทะเบียนสำเร็จ' ? 'success' : 'error'}
+              color={responseURL.indexOf('ลงทะเบียนสำเร็จ') > -1 ? 'success' : 'error'}
               onClick={handleCloseLiff}
               sx={{ mt: 3, mb: 2 }}
             >

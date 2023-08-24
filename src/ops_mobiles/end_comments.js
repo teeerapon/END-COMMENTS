@@ -144,12 +144,12 @@ export default function SignIn() {
     };
 
     const http_AttachFiles =
-      config.http + '/api/STcheck_files';
-    //'http://localhost:32001/api/STcheck_files';
+      config.http + '/STcheck_files';
+    //'http://localhost:32001/STcheck_files';
 
     const http =
-      // config.http + '/api/STrack_End_Comments';
-      config.http + '/api/STrack_End_Comments';
+      // config.http + '/STrack_End_Comments';
+      config.http + '/STrack_End_Comments';
 
     const body = {
       stk_code: stk_codeURL,
