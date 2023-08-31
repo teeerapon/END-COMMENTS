@@ -105,8 +105,6 @@ export default function SignIn() {
   const [endDate, setEndDate] = React.useState(dayjs());
   const [dataFilesCount, setDataFilesCount] = React.useState()
 
-  console.log(dataFilesCount);
-
   const handle_ChangeBeginDate = (newValue) => {
     setBeginDate(
       `${newValue.format('YYYY-MM-DD')}T${newValue.format('HH:mm:ss')}`
@@ -124,18 +122,25 @@ export default function SignIn() {
 
     const fileBolb = URL.createObjectURL(event.target.files[0])
 
+    let formData_1 = new FormData();
+    formData_1.append('ST_code', stk_codeURL);
+    formData_1.append('file', event.target.files[0]);
+    formData_1.append('filename', event.target.files[0].name);
+
+    console.log(formData_1);
+
     if (!dataFilesCount) {
       setDataFilesCount([{
         ST_code: stk_codeURL,
         file: fileBolb,
-        fileData: event.target.files[0],
+        fileData: formData_1,
         filename: event.target.files[0].name,
       }])
     } else {
       setDataFilesCount([...dataFilesCount, {
         ST_code: stk_codeURL,
         file: fileBolb,
-        fileData: event.target.files[0],
+        fileData: formData_1,
         filename: event.target.files[0].name,
       }])
     }
@@ -158,12 +163,12 @@ export default function SignIn() {
     const headers = {
       Authorization: 'application/json; charset=utf-8',
       Accept: 'application/json',
-      'ngrok-skip-browser-warning': '69420',
+      // 'ngrok-skip-browser-warning': '69420',
     };
 
     const http_AttachFiles =
       config.http + '/STcheck_files';
-    //'http://localhost:32001/STcheck_files';
+    // //'http://localhost:32001/STcheck_files';
 
     const http =
       // config.http + '/STrack_End_Comments';
@@ -182,7 +187,7 @@ export default function SignIn() {
         setResponseURL('สิ้นสุดการดำเนินรายการ ' + stk_codeURL);
         setPage(1);
         for (let i = 0; i < dataFilesCount.length; i++) {
-          await axios.post(http_AttachFiles, dataFilesCount[i], { headers });
+          await axios.post(http_AttachFiles, dataFilesCount[i].fileData, { headers });
         }
       } else {
         setResponseURL(response.data[0].res);
@@ -229,9 +234,9 @@ export default function SignIn() {
       .catch((err) => console.error(err));
   };
 
-  React.useEffect(() => {
-    initLine();
-  }, []);
+  // React.useEffect(() => {
+  //   initLine();
+  // }, []);
 
   if (page === 1) {
     return (
