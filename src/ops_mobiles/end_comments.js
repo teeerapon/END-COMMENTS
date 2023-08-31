@@ -18,6 +18,9 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import config from '../config'
+import ClearIcon from '@mui/icons-material/Clear';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -77,6 +80,7 @@ function sleep(delay = 0) {
 }
 
 export default function SignIn() {
+
   var today = new Date();
   var date =
     today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -99,8 +103,9 @@ export default function SignIn() {
   const [dataFiles, setDataFiles] = React.useState();
   const [beginDate, setBeginDate] = React.useState(dayjs());
   const [endDate, setEndDate] = React.useState(dayjs());
+  const [dataFilesCount, setDataFilesCount] = React.useState()
 
-  console.log(`${dayjs().format('YYYY-MM-DD')}T${dayjs().format('HH:mm:ss')}`);
+  console.log(dataFilesCount);
 
   const handle_ChangeBeginDate = (newValue) => {
     setBeginDate(
@@ -117,16 +122,29 @@ export default function SignIn() {
   const handle_files = async (event) => {
     event.preventDefault();
 
-    let array = [];
-    for (let i = 0; i < event.target.files.length; i++) {
-      let formData_1 = new FormData();
-      formData_1.append('ST_code', stk_codeURL);
-      formData_1.append('file', event.target.files[i]);
-      formData_1.append('filename', event.target.files[i].name);
+    const fileBolb = URL.createObjectURL(event.target.files[0])
 
-      array[i] = formData_1;
+    if (!dataFilesCount) {
+      setDataFilesCount([{
+        ST_code: stk_codeURL,
+        file: fileBolb,
+        fileData: event.target.files[0],
+        filename: event.target.files[0].name,
+      }])
+    } else {
+      setDataFilesCount([...dataFilesCount, {
+        ST_code: stk_codeURL,
+        file: fileBolb,
+        fileData: event.target.files[0],
+        filename: event.target.files[0].name,
+      }])
     }
-    setDataFiles(array);
+  };
+
+  const handleServiceRemove = (index) => {
+    const list = [...dataFilesCount];
+    list.splice(index, 1);
+    setDataFilesCount(list);
   };
 
   const handle_ChangeValue = (event) => {
@@ -163,8 +181,8 @@ export default function SignIn() {
       if (!response.data[0].res) {
         setResponseURL('สิ้นสุดการดำเนินรายการ ' + stk_codeURL);
         setPage(1);
-        for (let i = 0; i < dataFiles.length; i++) {
-          await axios.post(http_AttachFiles, dataFiles[i], { headers });
+        for (let i = 0; i < dataFilesCount.length; i++) {
+          await axios.post(http_AttachFiles, dataFilesCount[i], { headers });
         }
       } else {
         setResponseURL(response.data[0].res);
@@ -357,8 +375,42 @@ export default function SignIn() {
               Submit
             </Button>
           </Box>
+          <ImageList cols={1}>
+            {dataFilesCount ? dataFilesCount.map((res, index) =>
+              <ImageListItem style={{ maxWidth: 300 }}>
+                <img
+                  src={res.file}
+                  srcSet={res.file}
+                  alt={res.filename}
+                  loading="lazy"
+                />
+                <ImageListItemBar
+                  sx={{
+                    backgroundColor: 'rgba(0, 0, 0, 1)',
+                    color: 'rgba(255, 255, 255, 1)',
+                    mt: 2,
+                  }}
+                  position="below"
+                  title={
+                    <span>
+                      &nbsp; &nbsp;{res.filename}
+                    </span>
+                  }
+                  actionIcon={
+                    <IconButton
+                      sx={{ color: 'rgba(255, 255, 255, 1)' }}
+                      component="label"
+                      onClick={() => handleServiceRemove(index)}
+                    >
+                      <ClearIcon sx={{ fontSize: 20 }} />
+                    </IconButton>
+                  }
+                />
+              </ImageListItem>
+            ) : null}
+          </ImageList>
         </Box>
-      </Container>
+      </Container >
     );
   }
 }
