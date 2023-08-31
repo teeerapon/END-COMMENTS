@@ -234,9 +234,9 @@ export default function SignIn() {
       .catch((err) => console.error(err));
   };
 
-  // React.useEffect(() => {
-  //   initLine();
-  // }, []);
+  React.useEffect(() => {
+    initLine();
+  }, []);
 
   if (page === 1) {
     return (
